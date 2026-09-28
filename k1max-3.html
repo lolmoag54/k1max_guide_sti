@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Creality K1 Max — Guide interactif</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050705; --bg2:#0d130d; --bg3:#111a11; --line:#1d2b1d; --text:#eafbea; --muted:#84ab88;
+  --green:#39ff6a; --green2:#0aff9d; --glow:0 0 22px rgba(57,255,106,.45); --glow-soft:0 0 12px rgba(57,255,106,.25);
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);font-size:clamp(14.5px,12px + 0.9vw,17px)}
+body{background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,sans-serif;margin:0;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  background-image:radial-gradient(circle at 12% -10%, rgba(57,255,106,.10), transparent 45%),
+                    radial-gradient(circle at 100% 20%, rgba(10,255,157,.06), transparent 40%)}
+h1,h2,h3{font-family:'Space Grotesk',Inter,sans-serif;letter-spacing:-0.02em;margin:0}
+.grad{background:linear-gradient(90deg,var(--green),var(--green2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.card{position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.01)),rgba(15,22,15,.16);backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);border:1px solid rgba(255,255,255,.14);border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.10);transition:border-color .3s,transform .3s,box-shadow .3s}
+.card::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.14) 0%,transparent 35%);pointer-events:none}
+.card:hover{border-color:rgba(57,255,106,.6);transform:translateY(-3px);box-shadow:var(--glow-soft),0 12px 36px rgba(0,0,0,.4)}
+nav#nav{position:relative;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.12);border-radius:999px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.tab{position:relative;z-index:1;padding:.6rem 1.1rem;border-radius:999px;color:var(--muted);font-weight:600;font-size:.9rem;cursor:pointer;white-space:nowrap;transition:color .3s}
+.tab.active{color:#04170a}
+.tab:not(.active):hover{color:var(--green)}
+#tabIndicator{position:absolute;top:0;bottom:0;left:0;width:0;background:var(--green);border-radius:999px;box-shadow:var(--glow);transition:transform .45s cubic-bezier(.2,.8,.2,1),width .45s cubic-bezier(.2,.8,.2,1);z-index:0}
+.page{display:none}
+.page.active{display:block;animation:rise .5s cubic-bezier(.2,.7,.3,1)}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.accent-line{width:44px;height:3px;background:linear-gradient(90deg,var(--green),var(--green2));border-radius:2px}
+.btn-neon{background:rgba(57,255,106,.05);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1.5px solid var(--green);color:var(--green);padding:.7rem 1.3rem;border-radius:10px;font-weight:600;font-size:.9rem;
+  transition:all .3s ease;display:inline-flex;align-items:center;gap:.5rem}
+.btn-neon:hover{background:var(--green);color:#04170a;box-shadow:var(--glow);transform:translateY(-2px)}
+.float{animation:float 5s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.scan{animation:scan 3.2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes scan{0%,100%{transform:translateY(0);opacity:.85}50%{transform:translateY(118px);opacity:.35}}
+.hero-in{opacity:0;animation:heroIn .7s ease forwards}
+@keyframes heroIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.stat{opacity:0;animation:heroIn .6s ease forwards}
+.stat:nth-child(1){animation-delay:.35s}.stat:nth-child(2){animation-delay:.45s}
+.stat:nth-child(3){animation-delay:.55s}.stat:nth-child(4){animation-delay:.65s}
+details summary{list-style:none}
+details summary::-webkit-details-marker{display:none}
+.chev{transition:transform .3s}
+details[open] .chev{transform:rotate(90deg)}
+details[open] summary ~ p{animation:rise .3s ease}
+a{color:inherit}
+#stars{position:fixed;inset:0;z-index:-2;overflow:hidden;animation:starsDrift 100s linear infinite alternate}
+.star{position:absolute;border-radius:50%}
+@keyframes twinkle{0%,100%{opacity:.15}50%{opacity:1}}
+@keyframes starsDrift{from{transform:translateY(0)}to{transform:translateY(-35px)}}
+.bg-blob{position:fixed;border-radius:50%;filter:blur(95px);opacity:.25;z-index:-1;animation:drift 20s ease-in-out infinite alternate}
+.bg-blob.b1{width:440px;height:440px;background:#0aff9d;top:-140px;left:-120px}
+.bg-blob.b2{width:400px;height:400px;background:#39ff6a;bottom:-160px;right:-100px;animation-duration:24s}
+@keyframes drift{from{transform:translate(0,0)}to{transform:translate(50px,35px)}}
+</style>
+</head>
+<body>
+<div id="stars"></div>
+<div class="bg-blob b1"></div>
+<div class="bg-blob b2"></div>
+
+<header class="sticky top-0 z-40 backdrop-blur-xl bg-[#0507053d] border-b" style="border-color:rgba(255,255,255,.08);-webkit-backdrop-filter:blur(24px)">
+  <div class="max-w-6xl mx-auto px-5 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <svg width="30" height="30" viewBox="0 0 30 30"><polygon points="15,1 28,8 28,22 15,29 2,22 2,8" fill="none" stroke="#39ff6a" stroke-width="1.6"/><polygon points="15,8 22,12 22,18 15,22 8,18 8,12" fill="#39ff6a" opacity=".85"/></svg>
+      <div class="leading-none">
+        <p class="text-[10px] tracking-wide" style="color:var(--muted)">Creality</p>
+        <span class="font-bold text-lg" style="font-family:'Space Grotesk',sans-serif">K1&nbsp;MAX</span>
+      </div>
+    </div>
+    <nav class="flex gap-1 overflow-x-auto p-1" id="nav"><div id="tabIndicator"></div></nav>
+  </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-5 py-10">
+
+  <!-- ACCUEIL -->
+  <section id="page-home" class="page active">
+    <div class="grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <p class="text-sm font-semibold hero-in" style="color:var(--green);animation-delay:.05s">Creality</p>
+        <h1 class="text-5xl mt-2 mb-4 hero-in" style="animation-delay:.15s">La <span class="grad">K1&nbsp;Max</span>, sous toutes les coutures.</h1>
+        <p class="text-lg mb-6 hero-in" style="color:var(--muted);animation-delay:.25s">Chaque caractéristique, chaque étape, chaque réparation — réunies au même endroit.</p>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="card p-4 stat cursor-pointer" onclick="showDetail('speed')"><p class="text-2xl font-bold">600<span class="text-sm" style="color:var(--muted)"> mm/s</span></p><p class="text-sm" style="color:var(--muted)">Vitesse d'impression max</p><p class="text-[11px] mt-2" style="color:var(--green)">Détails →</p></div>
+          <div class="card p-4 stat cursor-pointer" onclick="showDetail('volume')"><p class="text-2xl font-bold">300×300×300<span class="text-sm" style="color:var(--muted)"> mm</span></p><p class="text-sm" style="color:var(--muted)">Volume d'impression</p><p class="text-[11px] mt-2" style="color:var(--green)">Détails →</p></div>
+          <div class="card p-4 stat cursor-pointer" onclick="showDetail('lidar')"><p class="text-2xl font-bold">LiDAR IA</p><p class="text-sm" style="color:var(--muted)">Détection des défauts</p><p class="text-[11px] mt-2" style="color:var(--green)">Détails →</p></div>
+          <div class="card p-4 stat cursor-pointer" onclick="showDetail('leveling')"><p class="text-2xl font-bold">Auto</p><p class="text-sm" style="color:var(--muted)">Nivellement mains libres</p><p class="text-[11px] mt-2" style="color:var(--green)">Détails →</p></div>
+        </div>
+      </div>
+      <div class="card p-6 flex items-center justify-center relative overflow-hidden" style="min-height:clamp(240px,50vw,400px)">
+        <svg viewBox="0 0 300 300" class="w-full max-w-xs float">
+          <circle cx="150" cy="150" r="118" fill="none" stroke="#123018" stroke-width="1.5"/>
+          <circle cx="150" cy="150" r="118" fill="none" stroke="#39ff6a" stroke-width="1.5" stroke-dasharray="8 12" opacity=".4"/>
+          <rect x="68" y="76" width="164" height="156" rx="12" fill="none" stroke="#39ff6a" stroke-width="2"/>
+          <rect x="80" y="205" width="140" height="14" rx="4" fill="#0d1a0d" stroke="#39ff6a" stroke-width="1.2"/>
+          <rect x="128" y="86" width="44" height="18" rx="3" fill="#0aff9d" opacity=".85"/>
+          <line x1="68" y1="114" x2="232" y2="114" stroke="#0aff9d" stroke-width="1.4" opacity=".5"/>
+          <rect x="68" y="108" width="164" height="14" fill="#39ff6a" opacity=".1" class="scan"/>
+          <line x1="68" y1="108" x2="232" y2="108" stroke="#39ff6a" stroke-width="2" class="scan"/>
+          <circle cx="150" cy="150" r="4.5" fill="#39ff6a"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- MANUEL -->
+  <section id="page-manual" class="page">
+    <h2 class="text-3xl mb-1">Manuel &amp; bonnes pratiques</h2>
+    <div class="accent-line mb-8"></div>
+    <div class="grid md:grid-cols-3 gap-6 mb-8">
+      <div class="md:col-span-2 space-y-4" id="manual-steps"></div>
+      <div class="flex flex-col gap-4">
+        <div class="card p-5 flex flex-col items-center justify-center gap-3">
+          <svg viewBox="0 0 160 160" class="w-28">
+            <circle cx="80" cy="80" r="46" fill="none" stroke="#39ff6a" stroke-width="2"/>
+            <circle cx="80" cy="80" r="46" fill="none" stroke="#0aff9d" stroke-width="2" stroke-dasharray="4 10" opacity=".6"/>
+            <rect x="70" y="18" width="20" height="40" rx="4" fill="#39ff6a" opacity=".8"/>
+            <polygon points="80,120 92,140 68,140" fill="#0aff9d"/>
+          </svg>
+          <p class="text-xs text-center" style="color:var(--muted)">Extrudeur à entraînement direct</p>
+        </div>
+        <div class="card p-5">
+          <svg viewBox="0 0 280 150" class="w-full">
+            <line x1="30" y1="15" x2="30" y2="120" stroke="#1d2b1d"/><line x1="30" y1="120" x2="270" y2="120" stroke="#1d2b1d"/>
+            <line x1="30" y1="45" x2="270" y2="45" stroke="#39ff6a" stroke-width="1" stroke-dasharray="3 4" opacity=".5"/>
+            <text x="266" y="40" font-size="9" fill="#39ff6a" text-anchor="end">200 °C</text>
+            <path d="M30,115 C60,112 75,55 100,48 C118,44 128,58 140,50 C160,42 180,45 270,45" fill="none" stroke="#39ff6a" stroke-width="2"/>
+            <text x="150" y="136" font-size="9" fill="#84ab88" text-anchor="middle">Temps après pression du bouton Extrudeur</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SÉCURITÉ -->
+  <section id="page-safety" class="page">
+    <h2 class="text-3xl mb-1">Consignes de sécurité</h2>
+    <div class="accent-line mb-8"></div>
+    <div class="card p-5 mb-6 flex justify-center">
+      <svg viewBox="0 0 220 170" class="w-full max-w-[260px]">
+        <defs><linearGradient id="hg" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#123018"/><stop offset="100%" stop-color="#39ff6a"/></linearGradient></defs>
+        <rect x="30" y="20" width="34" height="120" rx="8" fill="url(#hg)"/>
+        <rect x="130" y="85" width="34" height="55" rx="8" fill="url(#hg)" opacity=".7"/>
+        <text x="47" y="14" font-size="10" fill="#eafbea" text-anchor="middle">300 °C</text>
+        <text x="47" y="155" font-size="9" fill="#84ab88" text-anchor="middle">Buse</text>
+        <text x="147" y="79" font-size="10" fill="#eafbea" text-anchor="middle">100 °C</text>
+        <text x="147" y="155" font-size="9" fill="#84ab88" text-anchor="middle">Plateau</text>
+      </svg>
+    </div>
+    <div class="grid md:grid-cols-2 gap-4" id="safety-grid"></div>
+    <div class="card p-5 mt-6" style="border-color:var(--green)">
+      <p class="font-semibold mb-1">Arrêt d'urgence</p>
+      <p style="color:var(--muted)">Maintenez l'interrupteur d'alimentation ou appuyez sur Stop à l'écran, puis coupez le secteur au mur. Ne passez jamais la main dans l'enceinte tant que la buse ou le plateau dépassent 50 °C.</p>
+    </div>
+  </section>
+
+  <!-- DÉPANNAGE -->
+  <section id="page-fix" class="page">
+    <h2 class="text-3xl mb-1">Démontage &amp; dépannage</h2>
+    <div class="accent-line mb-8"></div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="md:col-span-2 space-y-3" id="fix-accordion"></div>
+      <div class="card p-5 flex flex-col items-center justify-center gap-3 h-fit">
+        <svg viewBox="0 0 160 160" class="w-28">
+          <rect x="35" y="20" width="90" height="20" rx="4" fill="none" stroke="#39ff6a" stroke-width="1.6"/>
+          <rect x="25" y="55" width="110" height="24" rx="4" fill="rgba(57,255,106,.12)" stroke="#39ff6a" stroke-width="1.6"/>
+          <rect x="35" y="94" width="90" height="20" rx="4" fill="none" stroke="#0aff9d" stroke-width="1.6"/>
+          <rect x="45" y="128" width="70" height="16" rx="4" fill="rgba(57,255,106,.08)" stroke="#39ff6a" stroke-width="1.4"/>
+          <line x1="80" y1="40" x2="80" y2="55" stroke="#84ab88" stroke-width="1" stroke-dasharray="2 3"/>
+          <line x1="80" y1="79" x2="80" y2="94" stroke="#84ab88" stroke-width="1" stroke-dasharray="2 3"/>
+          <line x1="80" y1="114" x2="80" y2="128" stroke="#84ab88" stroke-width="1" stroke-dasharray="2 3"/>
+        </svg>
+        <p class="text-xs text-center" style="color:var(--muted)">Vue éclatée des modules</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMUNAUTÉ -->
+  <section id="page-community" class="page">
+    <h2 class="text-3xl mb-1">Modèles &amp; communauté</h2>
+    <div class="accent-line mb-8"></div>
+    <p class="mb-8" style="color:var(--muted)">Trouvez et partagez des modèles imprimables pour la K1 Max sur ces plateformes.</p>
+    <div class="grid sm:grid-cols-2 gap-4" id="links-grid"></div>
+  </section>
+
+  <!-- DÉTAIL CARACTÉRISTIQUE -->
+  <section id="page-detail" class="page">
+    <button onclick="goTo(0)" class="btn-neon mb-6">← Retour à l'accueil</button>
+    <div id="detail-content"></div>
+  </section>
+
+  <!-- CONFIDENTIALITÉ / RGPD -->
+  <section id="page-privacy" class="page">
+    <button onclick="goTo(0)" class="btn-neon mb-6">← Retour à l'accueil</button>
+    <h2 class="text-3xl mb-1">Confidentialité &amp; RGPD</h2>
+    <div class="accent-line mb-8"></div>
+    <div class="space-y-4">
+      <div class="card p-5"><p class="font-semibold mb-1">Données collectées</p><p style="color:var(--muted)">Aucune. Ce site ne contient ni formulaire, ni compte, ni cookie de suivi, ni outil de mesure d'audience.</p></div>
+      <div class="card p-5"><p class="font-semibold mb-1">Stockage sur votre appareil</p><p style="color:var(--muted)">Rien n'est enregistré dans votre navigateur : ni cookie, ni stockage local.</p></div>
+      <div class="card p-5"><p class="font-semibold mb-1">Ressources externes</p><p style="color:var(--muted)">Pour s'afficher, la page charge deux services techniques : Google Fonts (polices) et Tailwind CDN (styles). Comme pour toute ressource chargée depuis un autre serveur, votre adresse IP leur est visible au moment du chargement — aucune autre donnée n'est transmise ni conservée par ce site.</p></div>
+      <div class="card p-5"><p class="font-semibold mb-1">Responsable de publication</p><p style="color:var(--muted)">[Nom de l'établissement / de l'enseignant référent à compléter], dans le cadre d'un usage pédagogique.</p></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="max-w-6xl mx-auto px-5 py-8 text-xs flex flex-wrap items-center justify-between gap-3" style="color:var(--muted);border-top:1px solid var(--line)">
+  <span>Guide pédagogique non officiel — Creality K1 Max.</span>
+  <button onclick="showPrivacy()" style="color:var(--green)" class="underline decoration-dotted underline-offset-2">Confidentialité &amp; RGPD</button>
+</footer>
+
+<script>
+const starsEl=document.getElementById("stars");
+for(let i=0;i<150;i++){
+  const s=document.createElement("div");
+  s.className="star";
+  const size=(Math.random()*1.8+0.8).toFixed(1);
+  s.style.width=size+"px";
+  s.style.height=size+"px";
+  s.style.top=(Math.random()*100).toFixed(2)+"%";
+  s.style.left=(Math.random()*100).toFixed(2)+"%";
+  s.style.background=Math.random()<0.1?"#39ff6a":"#eafbea";
+  s.style.opacity=(Math.random()*.5+.35).toFixed(2);
+  s.style.animation=`twinkle ${(2+Math.random()*3).toFixed(1)}s ease-in-out ${(Math.random()*4).toFixed(1)}s infinite`;
+  starsEl.appendChild(s);
+}
+
+const pages=[["home","Accueil"],["manual","Manuel"],["safety","Sécurité"],["fix","Dépannage"],["community","Communauté"]];
+const nav=document.getElementById("nav");
+const indicator=document.getElementById("tabIndicator");
+const tabEls=[];
+let current=0;
+function goTo(i){
+  i=Math.max(0,Math.min(pages.length-1,i));
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  tabEls[i].classList.add("active");
+  document.getElementById("page-"+pages[i][0]).classList.add("active");
+  moveIndicator(tabEls[i]);
+  current=i;
+}
+pages.forEach(([id,label],i)=>{
+  const b=document.createElement("div");
+  b.className="tab"+(i===0?" active":"");
+  b.textContent=label;
+  b.onclick=()=>goTo(i);
+  nav.appendChild(b);
+  tabEls.push(b);
+});
+function moveIndicator(el){
+  indicator.style.width=el.offsetWidth+"px";
+  indicator.style.transform=`translateX(${el.offsetLeft}px)`;
+}
+window.addEventListener("load",()=>moveIndicator(tabEls[0]));
+window.addEventListener("resize",()=>moveIndicator(tabEls[current]));
+function showPrivacy(){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById("page-privacy").classList.add("active");
+  mainEl.scrollIntoView({behavior:"smooth"});
+}
+
+const mainEl=document.querySelector("main");
+let touchX=0,touchY=0;
+mainEl.addEventListener("touchstart",e=>{
+  touchX=e.touches[0].clientX;touchY=e.touches[0].clientY;
+},{passive:true});
+mainEl.addEventListener("touchend",e=>{
+  if(document.getElementById("page-detail").classList.contains("active"))return;
+  const dx=e.changedTouches[0].clientX-touchX;
+  const dy=e.changedTouches[0].clientY-touchY;
+  if(Math.abs(dx)>55 && Math.abs(dx)>Math.abs(dy)*1.4){
+    goTo(dx<0?current+1:current-1);
+  }
+},{passive:true});
+
+const steps=[
+["Charger le filament","Sur l'écran, appuyez sur le bouton Extrudeur : il chauffe la buse à la température cible puis fait tourner le moteur de l'extrudeur. Insérez simplement le filament dans l'entrée — le moteur l'aspire tout seul jusqu'à la buse. Ne forcez jamais un filament coincé à la main dans la buse, vous risqueriez de tordre les dents de l'engrenage ou de boucher la gorge."],
+["Niveler le plateau","Lancez le nivellement automatique depuis l'écran tactile. Le LiDAR sonde une grille sur le plateau ; aucun réglage manuel aux cales n'est nécessaire sur une machine saine."],
+["Préparer le plateau","Nettoyez la feuille PEI à l'alcool isopropylique. Pour l'ABS/PETG, une fine couche de bâton de colle améliore l'adhérence de la première couche."],
+["Trancher le modèle","Dans Creality Print ou Orca Slicer, sélectionnez le profil K1 Max, réglez les températures buse/plateau selon le filament, et activez l'input shaping au-delà de 300 mm/s."],
+["Lancer l'impression","Surveillez la première couche avant de vous éloigner. Vérifiez que la détection de défauts par LiDAR est activée pour les impressions sans surveillance."]
+];
+document.getElementById("manual-steps").innerHTML=steps.map(([t,d],i)=>
+ `<div class="card p-5 flex gap-4"><div class="text-sm font-bold w-6 shrink-0" style="color:var(--green)">${i+1}</div>
+  <div><p class="font-semibold mb-1">${t}</p><p style="color:var(--muted)">${d}</p></div></div>`).join("");
+
+const safety=[
+["Chaleur de la buse","La buse atteint jusqu'à 300 °C. Ne la touchez jamais pendant ou juste après l'impression — laissez refroidir au moins 10 minutes avant tout contact manuel."],
+["Plateau chauffant","Le plateau peut dépasser 100 °C. Manipulez la feuille PEI amovible par les bords, jamais par la surface, lorsqu'elle est chaude."],
+["Ventilation","Le PLA dégage peu d'odeur ; l'ABS/ASA émet des fumées — imprimez avec l'enceinte ventilée ou dans une pièce bien aérée."],
+["Électricité","Utilisez le câble d'alimentation fourni et une prise reliée à la terre. Débranchez avant d'ouvrir un panneau ou de remplacer une pièce."]
+];
+document.getElementById("safety-grid").innerHTML=safety.map(([t,d])=>
+ `<div class="card p-5"><p class="font-semibold mb-1">${t}</p><p style="color:var(--muted)">${d}</p></div>`).join("");
+
+const fixes=[
+["Buse bouchée","Éteignez l'imprimante et laissez la buse refroidir à température ambiante avant d'y toucher. Chauffez à 230 °C, rétractez complètement le filament, puis faites un cold-pull : chauffez à 90 °C et tirez un fil ferme et régulier pour extraire les résidus avec lui."],
+["Engrenages de l'extrudeur encrassés","Débranchez l'imprimante. Ouvrez le capot de l'extrudeur, retirez l'engrenage avec la clé hexagonale fournie, et nettoyez les résidus de filament avec une brosse en laiton — jamais d'air comprimé près de la carte mère."],
+["Remplacer la buse","Attendez le refroidissement complet. Chauffez à 200 °C, maintenez le bloc chauffant avec la clé fournie, et dévissez la buse. Vissez la nouvelle à la main, puis serrez d'un quart de tour supplémentaire à chaud."],
+["Accéder à la carte mère","Débranchez du secteur en premier. Retirez les vis du panneau arrière ; la carte se trouve derrière un cache sensible aux décharges électrostatiques — reliez-vous à la masse avant d'y toucher."]
+];
+document.getElementById("fix-accordion").innerHTML=fixes.map(([t,d],i)=>
+ `<details class="card p-5"><summary class="font-semibold cursor-pointer flex justify-between items-center gap-3">${t}
+   <span class="flex items-center gap-2 text-xs shrink-0" style="color:var(--green)">Étape ${i+1}
+   <svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg></span></summary>
+  <p class="mt-3" style="color:var(--muted)">${d}</p></details>`).join("");
+
+const links=[
+["MakerWorld","La plateforme de modèles de Bambu Lab — recherchez « K1 Max » pour les impressions de la communauté.","https://makerworld.com"],
+["Creality Cloud","Modèles officiels Creality, profils de tranchage et firmware.","https://www.crealitycloud.com"],
+["Thingiverse","La plateforme historique de partage de modèles 3D.","https://www.thingiverse.com"],
+["Printables","La bibliothèque de modèles communautaire de Prusa.","https://www.printables.com"]
+];
+document.getElementById("links-grid").innerHTML=links.map(([t,d,u])=>
+ `<a href="${u}" target="_blank" rel="noopener" class="card p-5 flex flex-col justify-between">
+   <div><p class="font-semibold mb-1">${t}</p><p class="text-sm mb-4" style="color:var(--muted)">${d}</p></div>
+   <span class="btn-neon w-fit text-sm">Visiter le site →</span></a>`).join("");
+
+const detailData={
+  speed:{eyebrow:"Vitesse d'impression",title:"600 mm/s",
+    chart:`<svg viewBox="0 0 300 150" class="w-full max-w-xs">
+      <text x="4" y="18" font-size="10" fill="#84ab88">Ender 3</text><rect x="70" y="8" width="29" height="14" rx="3" fill="rgba(255,255,255,.18)"/><text x="103" y="19" font-size="10" fill="#84ab88">80</text>
+      <text x="4" y="46" font-size="10" fill="#84ab88">Prusa MK4</text><rect x="70" y="36" width="73" height="14" rx="3" fill="rgba(255,255,255,.18)"/><text x="147" y="47" font-size="10" fill="#84ab88">200</text>
+      <text x="4" y="74" font-size="10" fill="#84ab88">Bambu X1C</text><rect x="70" y="64" width="183" height="14" rx="3" fill="rgba(255,255,255,.22)"/><text x="257" y="75" font-size="10" fill="#84ab88">500</text>
+      <text x="4" y="102" font-size="10" fill="#eafbea" font-weight="600">K1 Max</text><rect x="70" y="92" width="220" height="14" rx="3" fill="#39ff6a"/><text x="286" y="103" font-size="10" fill="#04170a" font-weight="700" text-anchor="end">600</text>
+      <text x="70" y="130" font-size="9" fill="#4d6350">mm/s de déplacement max</text></svg>`,
+    meaning:"C'est la vitesse maximale à laquelle la buse peut se déplacer pendant l'impression. La K1 Max l'atteint grâce à des moteurs CoreXY rapides et un capteur de vibration qui compense les résonances à haute vitesse.",
+    compare:"Une Ender 3 classique plafonne en pratique autour de 60-100 mm/s, une Prusa MK4 tourne plutôt vers 200 mm/s, tandis qu'une Bambu Lab X1 Carbon annonce, comme la K1 Max, jusqu'à 500-600 mm/s.",
+    pros:["Réduit fortement le temps d'impression sur les grosses pièces","Le lissage d'entrée (input shaping) limite le ringing à haute vitesse","Gain de temps notable en usage intensif ou professionnel"],
+    cons:["Nécessite un filament et des réglages adaptés pour rester fiable à pleine vitesse","Usure mécanique (courroies, buse) plus rapide qu'à vitesse standard","La qualité de surface peut légèrement baisser sur les couches très rapides"]},
+  volume:{eyebrow:"Volume d'impression",title:"300 × 300 × 300 mm",
+    chart:`<svg viewBox="0 0 200 190" class="w-full max-w-[220px]">
+      <polygon points="100,30 160,62 100,94 40,62" fill="rgba(255,255,255,.14)" stroke="#39ff6a" stroke-width="1.5"/>
+      <polygon points="40,62 100,94 100,164 40,132" fill="rgba(57,255,106,.10)" stroke="#39ff6a" stroke-width="1.5"/>
+      <polygon points="100,94 160,62 160,132 100,164" fill="rgba(57,255,106,.20)" stroke="#39ff6a" stroke-width="1.5"/>
+      <text x="100" y="18" font-size="10" fill="#84ab88" text-anchor="middle">300 mm</text>
+      <text x="16" y="100" font-size="10" fill="#84ab88" text-anchor="middle" transform="rotate(-60 16 100)">300 mm</text>
+      <text x="184" y="100" font-size="10" fill="#84ab88" text-anchor="middle" transform="rotate(60 184 100)">300 mm</text></svg>`,
+    meaning:"Ce sont les dimensions maximales (largeur × profondeur × hauteur) d'une pièce imprimable en un seul morceau.",
+    compare:"C'est nettement plus grand qu'une Ender 3 (220×220×250 mm) ou qu'une Bambu Lab X1 Carbon (256×256×256 mm), et comparable à une Creality CR-10 Smart Pro.",
+    pros:["Permet d'imprimer de grandes pièces sans les découper ni les assembler","Utile pour les pièces fonctionnelles ou le prototypage à l'échelle 1:1","Marge suffisante pour imprimer plusieurs objets à la fois"],
+    cons:["Un plateau plus grand chauffe plus lentement et consomme plus d'énergie","Le risque de voilement (warping) augmente sur les grandes surfaces","L'imprimante occupe davantage de place sur le bureau"]},
+  lidar:{eyebrow:"Intelligence embarquée",title:"LiDAR IA",
+    chart:`<svg viewBox="0 0 200 200" class="w-full max-w-[220px]">
+      <rect x="20" y="20" width="160" height="160" rx="6" fill="none" stroke="#1d2b1d"/>
+      <line x1="20" y1="60" x2="180" y2="60" stroke="#1d2b1d"/><line x1="20" y1="100" x2="180" y2="100" stroke="#1d2b1d"/><line x1="20" y1="140" x2="180" y2="140" stroke="#1d2b1d"/>
+      <line x1="60" y1="20" x2="60" y2="180" stroke="#1d2b1d"/><line x1="100" y1="20" x2="100" y2="180" stroke="#1d2b1d"/><line x1="140" y1="20" x2="140" y2="180" stroke="#1d2b1d"/>
+      <circle cx="30" cy="30" r="5" fill="#39ff6a"/>
+      <path d="M30,30 A40,40 0 0,1 70,30" fill="none" stroke="#39ff6a" stroke-width="1.2" opacity=".5"/>
+      <path d="M30,30 A80,80 0 0,1 110,30" fill="none" stroke="#39ff6a" stroke-width="1.2" opacity=".3"/>
+      <path d="M30,30 A120,120 0 0,1 150,30" fill="none" stroke="#39ff6a" stroke-width="1.2" opacity=".18"/>
+      <circle cx="120" cy="110" r="4" fill="#0aff9d"/></svg>`,
+    meaning:"Un capteur LiDAR scanne chaque couche pendant l'impression pour détecter des défauts (décollement, spaghetti, obstruction) et peut mettre l'impression en pause automatiquement.",
+    compare:"La plupart des imprimantes grand public (Ender 3, Prusa MK4) n'ont pas de détection visuelle intégrée ; certaines Bambu Lab utilisent une caméra IA plutôt qu'un LiDAR pour une fonction similaire.",
+    pros:["Évite de gâcher du filament et du temps sur une impression ratée","Rassurant pour les impressions longues sans surveillance","Aide aussi à détecter des obstacles physiques autour du plateau"],
+    cons:["Ne remplace pas une vérification humaine régulière","Peut occasionnellement déclencher une fausse alerte","Fonction qui peut nécessiter une mise à jour firmware pour rester fiable"]},
+  leveling:{eyebrow:"Préparation du plateau",title:"Nivellement automatique",
+    chart:`<svg viewBox="0 0 300 140" class="w-full max-w-sm">
+      <text x="70" y="122" font-size="10" fill="#84ab88" text-anchor="middle">Avant</text>
+      <path d="M15,60 Q40,40 65,58 T115,45 T140,62" fill="none" stroke="#84ab88" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <circle cx="15" cy="60" r="3" fill="#84ab88"/><circle cx="65" cy="58" r="3" fill="#84ab88"/><circle cx="115" cy="45" r="3" fill="#84ab88"/><circle cx="140" cy="62" r="3" fill="#84ab88"/>
+      <line x1="160" y1="70" x2="180" y2="70" stroke="#39ff6a" stroke-width="1.5"/><polygon points="180,66 188,70 180,74" fill="#39ff6a"/>
+      <text x="245" y="122" font-size="10" fill="#39ff6a" text-anchor="middle">Après</text>
+      <line x1="200" y1="55" x2="290" y2="55" stroke="#39ff6a" stroke-width="1.8"/>
+      <circle cx="200" cy="55" r="3" fill="#39ff6a"/><circle cx="245" cy="55" r="3" fill="#39ff6a"/><circle cx="290" cy="55" r="3" fill="#39ff6a"/></svg>`,
+    meaning:"L'imprimante mesure elle-même la planéité du plateau via un capteur puis compense les irrégularités dans le firmware, sans réglage manuel aux vis ni feuille de papier.",
+    compare:"Une Ender 3 de base nécessite un nivellement manuel aux 4 vis ; une Prusa MK4 et une Bambu Lab X1 Carbon proposent, comme la K1 Max, un nivellement automatique.",
+    pros:["Fait gagner du temps avant chaque impression","Plus précis et répétable qu'un réglage manuel","Accessible aux débutants sans expérience mécanique"],
+    cons:["Ne corrige pas un plateau physiquement endommagé ou vrillé","Dépend d'un capteur qui peut nécessiter un étalonnage périodique","Peut masquer un problème mécanique sous-jacent au lieu de le révéler"]}
+};
+function showDetail(key){
+  const d=detailData[key];
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById("page-detail").classList.add("active");
+  document.getElementById("detail-content").innerHTML=`
+    <p class="text-sm font-semibold" style="color:var(--green)">${d.eyebrow}</p>
+    <h2 class="text-3xl mt-1 mb-5">${d.title}</h2>
+    <p class="mb-6" style="color:var(--muted)">${d.meaning}</p>
+    <div class="card p-5 mb-6 flex justify-center">${d.chart}</div>
+    <div class="card p-5 mb-6"><p class="font-semibold mb-1">Face à d'autres modèles</p><p style="color:var(--muted)">${d.compare}</p></div>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="card p-5"><p class="font-semibold mb-2">Avantages</p><ul class="space-y-1.5 text-sm" style="color:var(--muted)">${d.pros.map(x=>`<li>+ ${x}</li>`).join("")}</ul></div>
+      <div class="card p-5"><p class="font-semibold mb-2">Inconvénients</p><ul class="space-y-1.5 text-sm" style="color:var(--muted)">${d.cons.map(x=>`<li>− ${x}</li>`).join("")}</ul></div>
+    </div>`;
+  mainEl.scrollIntoView({behavior:"smooth"});
+}
+</script>
+</body>
+</html>
